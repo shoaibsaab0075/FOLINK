@@ -1,39 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common'
-import { QuestionService } from './question.service'
+import { Controller, Post, Body, ValidationPipe, HttpCode, HttpStatus } from '@nestjs/common'
+import { QuestionService } from './application/question.service'
 import { CreateQuestionDto } from './dto/create-question.dto'
-import { UpdateQuestionDto } from './dto/update-question.dto'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { CreateQuestionSetDto } from './dto/create-question-set.dto'
 
+@ApiTags('텍스트를 통해 질문 추출')
 @Controller('question')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Post('create-question')
-  public async create(@Body(ValidationPipe) createQuestionDto: CreateQuestionDto) {
-    const question = await this.questionService.create(createQuestionDto)
+  @ApiOperation({ summary: '질문 추출', description: '텍스트를 주입해 질문을 추출하는 AP입니다' })
+  @ApiBody({ type: CreateQuestionDto })
+  @HttpCode(HttpStatus.CREATED)
+  @ApiResponse({ status: 201, description: '질문들 생성 성공', type: CreateQuestionSetDto })
+  @Post('generate-by-text')
+  public async generateQuestionsByText(
+    @Body(ValidationPipe) createQuestionDto: CreateQuestionDto
+  ): Promise<{ data: CreateQuestionSetDto; message: string }> {
+    const questionSet = await this.questionService.createQuestion(createQuestionDto)
 
     return {
-      data: question,
-      message: '질문에 대한 답변입니다'
+      data: questionSet,
+      message: 'text값에 대한 질문 생성'
     }
-  }
-
-  @Get()
-  findAll() {
-    return this.questionService.findAll()
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionService.findOne(+id)
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
-    return this.questionService.update(+id, updateQuestionDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionService.remove(+id)
   }
 }

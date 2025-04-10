@@ -5,6 +5,7 @@ import { ConfigurationModule } from './configuration/configuration.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigService } from '@nestjs/config'
 import { QuestionModule } from './question/question.module'
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { QuestionModule } from './question/question.module'
       })
     }),
     ConfigurationModule,
-    QuestionModule
+    QuestionModule,
+    RedisModule
   ],
   controllers: [AppController],
   providers: [AppService]

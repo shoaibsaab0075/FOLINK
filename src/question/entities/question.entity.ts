@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
+  ManyToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { IsDate, IsString } from 'class-validator'
+import { QuestionSet } from './question-set.entity'
 
 @Entity()
 export class Question extends BaseEntity {
@@ -21,7 +24,7 @@ export class Question extends BaseEntity {
     nullable: false
   })
   @IsString()
-  public readonly title: string
+  public title: string
 
   @Column({
     type: 'varchar',
@@ -29,7 +32,11 @@ export class Question extends BaseEntity {
     nullable: false
   })
   @IsString()
-  public readonly question: string
+  public question: string
+
+  @ManyToOne(() => QuestionSet, (set) => set.questions)
+  @Index()
+  public questionSet: QuestionSet
 
   @CreateDateColumn({
     name: 'create_At',
@@ -38,4 +45,17 @@ export class Question extends BaseEntity {
   })
   @IsDate()
   public readonly createdAt: Date
+
+  // 생성자 추가 (직접 인스턴스 생성 방지 및 초기화 관리)
+  private constructor(title: string, question: string, questionSet: QuestionSet) {
+    super()
+    this.title = title
+    this.question = question
+    this.questionSet = questionSet
+  }
+
+  // 도메인 팩토리 메서드
+  static createQuestion(title: string, question: string, questionSet: QuestionSet): Question {
+    return new Question(title, question, questionSet)
+  }
 }
