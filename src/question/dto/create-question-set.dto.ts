@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer'
-import { IsDate, IsNumber, IsString } from 'class-validator'
-import { QuestionDto } from './question.dto'
+import { IsNumber, IsString } from 'class-validator'
+import { ProjectQuestionDto } from './response-project-question.dto'
+import { TechStackQuestionDto } from './response-stack-question.dto'
 
 export class CreateQuestionSetDto {
   @Expose()
@@ -12,9 +13,8 @@ export class CreateQuestionSetDto {
   public readonly originalText: string
 
   @Expose()
-  public questions: QuestionDto[]
+  public projectQuestions: ProjectQuestionDto[]
 
-//   @Expose()
-//   @IsDate()
-//   public readonly createdAt: Date
+  @Expose()
+  public techStackQuestions: TechStackQuestionDto[]
 }

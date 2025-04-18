@@ -6,36 +6,50 @@ import { Repository } from 'typeorm'
 import { DatabaseError } from 'src/common/error'
 import { QuestionSet } from '../entities/question-set.entity'
 import { plainToClass } from 'class-transformer'
-import { QuestionDto } from '../dto/question.dto'
 import { CreateQuestionSetDto } from '../dto/create-question-set.dto'
-import { GeminiApiService } from '../integrations/gemini-api.service'
+import { QuestionGeminiService } from '../integrations/question-gemini.service'
+import { QuestionStack } from '../entities/question-stack.entity'
+import { TechStackQuestionDto } from '../dto/response-stack-question.dto'
+import { ProjectQuestionDto } from '../dto/response-project-question.dto'
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(QuestionSet)
     private readonly questionSetRepository: Repository<QuestionSet>,
-    private readonly geminiApiService: GeminiApiService
+    private readonly geminiApiService: QuestionGeminiService
   ) {}
 
   /**
-   * QuestionSet과 Question 엔티티를 생성한 후 DB에 저장
-   * 결과를 CreateQuestionSetDto로 변환해 반환
+   * 질문 세트 생성 및 저장
    */
   public async createQuestion(dto: CreateQuestionDto): Promise<CreateQuestionSetDto> {
-    const questionData = await this.geminiApiService.generateQuestions(dto.text)
-    const questionSet = QuestionSet.createQuestionSet(dto.text)         // 팩토리 메서드를 호출해서 객체를 초기화 시킨 후 사용자가 입력한 text값을  전달
-    const questions = questionData.map(({ title, question }) =>         // Question 객체 생성 (구조 분해 할당으로 title과 question 추출)
-      Question.createQuestion(title, question, questionSet)       
-    )
-    questions.forEach((question) => questionSet.addQuestion(question))  // questions 배열을 순회하면서 QuestionSet의 questions 배열에 Question 추가
+    const { tech_stack, projects } = await this.geminiApiService.generateQuestions(dto.text)
+    const questionSet = QuestionSet.createQuestionSet(dto.text)
+
+    // 프로젝트 질문 추가
+    projects.forEach((project) => {
+      project.questions.forEach(({ text, purpose }) => {
+        const q = Question.createQuestion(project.project_name, text, purpose, questionSet)
+        questionSet.addQuestion(q)
+      })
+    })
+
+    // 기술 질문 추가
+    tech_stack.forEach((tech) => {
+      tech.questions.forEach(({ text, purpose }) => {
+        const q = QuestionStack.createQuestionStack(tech.stack, text, purpose, questionSet)
+        questionSet.addQuestionStack(q)
+      })
+    })
+
     const savedSet = await this.saveQuestionSet(questionSet)
 
-    return this.toDto(savedSet)  // DTO 변환 및 반환
+    return this.toDto(savedSet)
   }
 
   /**
-   * QuestionSet, Questions 객체를 DB에 저장 - { cascade: true } 옵션으로 Questions도 같이 DB에 저장됨
+   * 질문 세트 저장
    */
   private async saveQuestionSet(questionSet: QuestionSet): Promise<QuestionSet> {
     try {
@@ -46,15 +60,25 @@ export class QuestionService {
   }
 
   /**
-   * QuestionSet 객체를 CreateQuestionSetDto로 변환
-   * 민감한 데이터 노출, 순환 참조 문제, 불필요한 데이터 전송 등을 방지
+   * 엔티티를 DTO로 변환
    */
   private toDto(questionSet: QuestionSet): CreateQuestionSetDto {
-    const questionSetDto = plainToClass(CreateQuestionSetDto, questionSet, {    // 일반 객체를 DTO 클래스로 변환
-      excludeExtraneousValues: true                                             // DTO에 정의되지 않은 속성(예: questionSet 속성)을 제외 @Expose()없는 것도 제외
+    const questionSetDto = plainToClass(CreateQuestionSetDto, questionSet, {
+      excludeExtraneousValues: true
     })
-    questionSetDto.questions = questionSet.questions.map((q) =>                 // Question 배열을 순회하며 QuestionDto로 변환
-      plainToClass(QuestionDto, q, { excludeExtraneousValues: true })
+    questionSetDto.projectQuestions = questionSet.questions.map((q) =>
+      plainToClass(
+        ProjectQuestionDto,
+        { id: q.id, projectName: q.projectName, question: q.question, purpose: q.purpose },
+        { excludeExtraneousValues: true }
+      )
+    )
+    questionSetDto.techStackQuestions = questionSet.questionStacks.map((s) =>
+      plainToClass(
+        TechStackQuestionDto,
+        { id: s.id, stack: s.stackName, question: s.question, purpose: s.purpose },
+        { excludeExtraneousValues: true }
+      )
     )
     return questionSetDto
   }

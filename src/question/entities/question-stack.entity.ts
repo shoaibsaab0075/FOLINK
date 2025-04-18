@@ -1,33 +1,24 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from 'typeorm'
-import { IsDate, IsString } from 'class-validator'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index, CreateDateColumn } from 'typeorm'
 import { QuestionSet } from './question-set.entity'
+import { IsDate, IsString } from 'class-validator'
 
-@Entity()
-export class Question extends BaseEntity {
+@Entity('question_stacks')
+export class QuestionStack {
   @PrimaryGeneratedColumn({
     type: 'integer',
     name: 'id'
   })
   public readonly id: number
 
-  // 프로젝트 명
+  // 기술 이름
   @Column({
     type: 'varchar',
-    name: 'projectName',
+    name: 'stack_name',
     nullable: false
   })
-  @IsString()
-  public projectName: string
+  public stackName: string
 
-  // 해당 프로젝트에 관한 질문
+  // 기술에 대한 질문 (왜 썼는지 등)
   @Column({
     type: 'varchar',
     name: 'question',
@@ -45,10 +36,6 @@ export class Question extends BaseEntity {
   @IsString()
   public purpose: string
 
-  @ManyToOne(() => QuestionSet, (set) => set.questions)
-  @Index()
-  public questionSet: QuestionSet
-
   @CreateDateColumn({
     name: 'create_At',
     type: 'timestamp',
@@ -57,27 +44,28 @@ export class Question extends BaseEntity {
   @IsDate()
   public readonly createdAt: Date
 
-  // 생성자 추가 (직접 인스턴스 생성 방지 및 초기화 관리)
+  @ManyToOne(() => QuestionSet, (set) => set.questionStacks)
+  @Index()
+  public questionSet: QuestionSet
+
   private constructor(
-    projectName: string,
+    stackName: string,
     question: string,
     purpose: string,
     questionSet: QuestionSet
   ) {
-    super()
-    this.projectName = projectName
+    this.stackName = stackName
     this.question = question
     this.purpose = purpose
     this.questionSet = questionSet
   }
 
-  // 도메인 팩토리 메서드
-  static createQuestion(
-    projectName: string,
+  static createQuestionStack(
+    stackName: string,
     question: string,
     purpose: string,
     questionSet: QuestionSet
-  ): Question {
-    return new Question(projectName, question, purpose, questionSet)
+  ): QuestionStack {
+    return new QuestionStack(stackName, question, purpose, questionSet)
   }
 }

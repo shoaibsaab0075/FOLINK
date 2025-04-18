@@ -24,7 +24,7 @@ import { RedisModule } from './redis/redis.module';
     }),
     ConfigurationModule,
     QuestionModule,
-    RedisModule
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService]
