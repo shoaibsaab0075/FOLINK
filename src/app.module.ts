@@ -4,6 +4,8 @@ import { AppService } from './app.service'
 import { ConfigurationModule } from './configuration/configuration.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigService } from '@nestjs/config'
+import { QuestionModule } from './question/question.module'
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { ConfigService } from '@nestjs/config'
         synchronize: config.get<boolean>('TYPEORM_SYBCHRONIZE')
       })
     }),
-    ConfigurationModule
+    ConfigurationModule,
+    QuestionModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService]

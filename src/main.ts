@@ -4,8 +4,11 @@ import { AppModule } from './app.module'
 import * as expressBasicAuth from 'express-basic-auth'
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { JsonRequestInterceptor } from './interceptors/json-request.interceptor'
-import { ErrorResponseInterceptor } from './interceptors/error-response.interceptor'
+import { JsonRequestInterceptor } from './common/interceptors/json-request.interceptor'
+import { ErrorResponseInterceptor } from './common/interceptors/error-response.interceptor'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -15,10 +18,7 @@ async function bootstrap() {
     credentials: true
   })
 
-  app.useGlobalInterceptors(
-    new JsonRequestInterceptor(),
-    new ErrorResponseInterceptor()
-  )
+  app.useGlobalInterceptors(new JsonRequestInterceptor(), new ErrorResponseInterceptor())
 
   app.use(cookieParser())
   app.use(
