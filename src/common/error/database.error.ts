@@ -1,6 +1,9 @@
 export class DatabaseError extends Error {
-  constructor(message: string) {
+  public readonly details?: string[]
+
+  constructor(message: string, details?: string[]) {
     super(message)
     this.name = 'DatabaseError'
+    this.details = details
   }
 }

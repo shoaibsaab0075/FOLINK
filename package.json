@@ -44,6 +44,7 @@
     "dotenv": "^16.4.7",
     "express-basic-auth": "^1.2.1",
     "ioredis": "^5.6.0",
+    "nestjs-rate-limiter": "^3.1.0",
     "nodemon": "^3.1.9",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
