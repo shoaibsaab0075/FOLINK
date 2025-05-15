@@ -8,7 +8,7 @@ export class TechStackQuestionDto {
 
   @Expose()
   @IsString()
-  public readonly stack: string
+  public readonly stackName: string
 
   @Expose()
   @IsString()
@@ -17,4 +17,8 @@ export class TechStackQuestionDto {
   @Expose()
   @IsString()
   public readonly purpose: string
+
+  @Expose()
+  @IsNumber()
+  public readonly conversationId: number | null
 }

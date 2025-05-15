@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
-import { IApiResponse } from 'src/util/api-response.util'
+import { IApiResponse } from 'src/common/util/api-response.util'
 
 @Injectable()
 export class ErrorResponseInterceptor implements NestInterceptor {
@@ -41,6 +41,7 @@ export class ErrorResponseInterceptor implements NestInterceptor {
         }
 
         this.logger.error(`[${request.method}] ${request.url} - ${message}`)
+        this.logger.error(err.stack)
 
         response.status(status) // HTTP 상태 코드 설정
         return throwError(() => new HttpException(apiResponse, status))

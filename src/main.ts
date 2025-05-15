@@ -26,7 +26,7 @@ async function bootstrap() {
     expressBasicAuth({
       challenge: true,
       users: {
-        [process.env.SWAGGER_USER]: process.env.SWAGGER_PW
+        [process.env.SWAGGER_USER as string]: process.env.SWAGGER_PW as string
       }
     })
   )

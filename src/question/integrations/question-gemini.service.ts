@@ -2,8 +2,8 @@ import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { GeminiApiError } from 'src/common/error'
+import { CacheKeyGenerator } from 'src/common/util/cache-key-generator'
 import { RedisService } from 'src/redis/redis.service'
-import { createHash } from 'crypto'
 
 @Injectable()
 export class QuestionGeminiService {
@@ -15,7 +15,7 @@ export class QuestionGeminiService {
     private readonly redisService: RedisService,
     private readonly configService: ConfigService
   ) {
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string)
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
     this.ttl = this.configService.get<number>('REDIS_TTL', 1800)
   }
@@ -24,8 +24,7 @@ export class QuestionGeminiService {
    * 캐시 키 생성 후 암호화 (text와 type을 기반으로 고유한 키 생성)
    */
   private generateCacheKey(text: string, type: string = ''): string {
-    const hash = createHash('md5').update(`${text}:${type}`).digest('hex')
-    return `questions:v2:${hash}`
+    return CacheKeyGenerator.generateKey('questions:v2', text, type)
   }
 
   /**

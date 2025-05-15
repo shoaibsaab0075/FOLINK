@@ -1,7 +1,7 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator'
+// create-answer.dto.ts
+import { IsString } from 'class-validator'
 
 export class CreateAnswerDto {
   @IsString()
-  @IsNotEmpty()
-  public readonly userResponse: string
+  public userResponse: string
 }

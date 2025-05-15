@@ -1,52 +1,34 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index, CreateDateColumn } from 'typeorm'
 import { QuestionSet } from './question-set.entity'
 import { IsDate, IsString } from 'class-validator'
+import { Conversation } from 'src/answer/entities/conversation.entity'
 
 @Entity('question_stacks')
 export class QuestionStack {
-  @PrimaryGeneratedColumn({
-    type: 'integer',
-    name: 'id'
-  })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   public readonly id: number
 
-  // 기술 이름
-  @Column({
-    type: 'varchar',
-    name: 'stack_name',
-    nullable: false
-  })
+  @Column({ type: 'varchar', name: 'stack_name', nullable: false })
   public stackName: string
 
-  // 기술에 대한 질문 (왜 썼는지 등)
-  @Column({
-    type: 'varchar',
-    name: 'question',
-    nullable: false
-  })
+  @Column({ type: 'varchar', name: 'question', nullable: false })
   @IsString()
   public question: string
 
-  // 질문에 대한 목적
-  @Column({
-    type: 'varchar',
-    name: 'purpose',
-    nullable: false
-  })
+  @Column({ type: 'varchar', name: 'purpose', nullable: false })
   @IsString()
   public purpose: string
 
-  @CreateDateColumn({
-    name: 'create_At',
-    type: 'timestamp',
-    nullable: false
-  })
+  @CreateDateColumn({ name: 'create_At', type: 'timestamp', nullable: false })
   @IsDate()
   public readonly createdAt: Date
 
   @ManyToOne(() => QuestionSet, (set) => set.questionStacks)
   @Index()
   public questionSet: QuestionSet
+
+  @Column({ type: 'integer', name: 'conversationId', nullable: false })
+  public conversationId: number
 
   private constructor(
     stackName: string,
