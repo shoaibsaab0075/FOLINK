@@ -23,10 +23,10 @@ export class QuestionSet extends BaseEntity {
   @IsDate()
   public readonly createdAt: Date
 
-  @OneToMany(() => Question, (question) => question.questionSet)
+  @OneToMany(() => Question, (question) => question.questionSet, { cascade: true })
   public questions: Question[]
 
-  @OneToMany(() => QuestionStack, (stack) => stack.questionSet)
+  @OneToMany(() => QuestionStack, (stack) => stack.questionSet, { cascade: true })
   public questionStacks: QuestionStack[]
 
   private constructor(originalText: string) {

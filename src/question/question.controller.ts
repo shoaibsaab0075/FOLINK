@@ -28,8 +28,9 @@ export class QuestionController {
   @Get(':questionId')
   public async getQuestions(
     @Param('questionId') questionId: number
-  ): Promise<IApiResponse<CreateQuestionSetDto>> {
+  ): Promise<IApiResponse<CreateQuestionSetDto | null>> {
     const questionSet = await this.questionService.getQuestionsById(questionId)
+    
     return ApiResponseUtil.success(questionSet, '질문 세트 조회 성공', HttpStatus.OK)
   }
 }

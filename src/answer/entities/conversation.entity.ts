@@ -18,7 +18,7 @@ export class Conversation extends BaseEntity {
   public readonly id: number
 
   @Column()
-  public readonly originalQuestionId: string
+  public originalQuestionId: string
 
   @Column()
   public readonly originalQuestionText: string

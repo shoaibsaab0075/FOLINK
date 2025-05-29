@@ -27,7 +27,7 @@ export class QuestionStack {
   @Index()
   public questionSet: QuestionSet
 
-  @Column({ type: 'integer', name: 'conversationId', nullable: false })
+  @Column({ type: 'integer', name: 'conversationId', nullable: true })
   public conversationId: number
 
   private constructor(
