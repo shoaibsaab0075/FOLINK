@@ -4,7 +4,7 @@ import { AppModule } from './app.module'
 import * as expressBasicAuth from 'express-basic-auth'
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { JsonRequestInterceptor } from './common/interceptors/json-request.interceptor'
+import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor'
 import { ErrorResponseInterceptor } from './common/interceptors/error-response.interceptor'
 import * as dotenv from 'dotenv'
 
@@ -18,7 +18,7 @@ async function bootstrap() {
     credentials: true
   })
 
-  app.useGlobalInterceptors(new JsonRequestInterceptor(), new ErrorResponseInterceptor())
+  app.useGlobalInterceptors(new SuccessResponseInterceptor(), new ErrorResponseInterceptor())
 
   app.use(cookieParser())
   app.use(
@@ -26,7 +26,7 @@ async function bootstrap() {
     expressBasicAuth({
       challenge: true,
       users: {
-        [process.env.SWAGGER_USER]: process.env.SWAGGER_PW
+        [process.env.SWAGGER_USER as string]: process.env.SWAGGER_PW as string
       }
     })
   )

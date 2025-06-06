@@ -19,11 +19,4 @@ export class AppService {
     const test =  this.test.find(test => test.id === id)
     return test
   }
-
-  PostTestDate(dto: TestDto): void {
-    this.test.push({
-      id: this.test.length + 1,
-      ... dto
-    })
-  }
 }

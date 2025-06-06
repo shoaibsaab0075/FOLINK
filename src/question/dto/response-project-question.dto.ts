@@ -17,4 +17,8 @@ export class ProjectQuestionDto {
   @Expose() // 이걸 제거하면 반환되는 DTO값에 반영되지않음
   @IsString()
   public readonly purpose: string
+
+  @Expose()
+  @IsNumber()
+  public readonly conversationId: number | null
 }
