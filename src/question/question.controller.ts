@@ -20,17 +20,18 @@ export class QuestionController {
     @Body() createQuestionDto: CreateQuestionDto
   ): Promise<IApiResponse<{ questionSet: CreateQuestionSetDto }>> {
     const questionSet = await this.questionService.createQuestion(createQuestionDto)
+    
     return ApiResponseUtil.success({ questionSet }, 'text값에 대한 질문 생성', HttpStatus.CREATED)
   }
 
   @ApiOperation({ summary: '질문 세트 조회', description: '추출된 질문 리스트 목록 조회' })
   @HttpCode(HttpStatus.OK)
-  @Get(':questionId')
+  @Get(':questionSetId')
   public async getQuestions(
-    @Param('questionId') questionId: number
+    @Param('questionSetId') questionId: number
   ): Promise<IApiResponse<CreateQuestionSetDto | null>> {
     const questionSet = await this.questionService.getQuestionsById(questionId)
-    
+
     return ApiResponseUtil.success(questionSet, '질문 세트 조회 성공', HttpStatus.OK)
   }
 }

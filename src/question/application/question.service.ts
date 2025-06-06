@@ -44,8 +44,8 @@ export class QuestionService {
   }
 
  public async createQuestion(dto: CreateQuestionDto): Promise<CreateQuestionSetDto> {
-    const { tech_stack, projects } = await this.geminiApiService.generateQuestions(dto.text);
-    const questionSet = await this.questionSetRepository.save(QuestionSet.createQuestionSet(dto.text));
+    const { tech_stack, projects } = await this.geminiApiService.generateQuestions(dto.userResponse);
+    const questionSet = await this.questionSetRepository.save(QuestionSet.createQuestionSet(dto.userResponse));
 
     const savedQuestions = await Promise.all(
       projects.flatMap((project) =>
