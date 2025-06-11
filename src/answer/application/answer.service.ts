@@ -136,12 +136,11 @@ export class AnswerService {
     return response
   }
 
-  public async getMessagesByConversationId(
-    conversationId: number
-  ) {
+  public async getMessagesByConversationId(conversationId: number) {
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
-      relations: ['messages']
+      relations: ['messages'],
+      order: { messages: { createdAt: 'ASC' } }
     })
     if (!conversation) throw ApiResponseUtil.error('대화를 찾을 수 없습니다.', HttpStatus.NOT_FOUND)
 
