@@ -8,9 +8,13 @@ import { QuestionModule } from './question/question.module'
 import { RedisModule } from './redis/redis.module'
 import { AnswerModule } from './answer/answer.module'
 import { APP_PIPE } from '@nestjs/core'
+import { MulterModule } from '@nestjs/platform-express'
 
 @Module({
   imports: [
+    MulterModule.register({
+      dest: './uploads'
+    }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

@@ -8,5 +8,5 @@ export class CreateQuestionDto {
   })
   @IsNotEmpty({ message: 'userResponse는 필수입니다' })
   @IsString({ message: 'userResponse는 문자열이어야 합니다' })
-  public readonly userResponse: string
+  public userResponse: string
 }
