@@ -1,5 +1,5 @@
 export class Test {
-  id: number
-  name: string
-  password: string
+  id!: number
+  name!: string
+  password!: string
 }

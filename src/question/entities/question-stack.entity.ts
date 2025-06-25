@@ -6,7 +6,7 @@ import { Conversation } from 'src/answer/entities/conversation.entity'
 @Entity('question_stacks')
 export class QuestionStack {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
-  public readonly id: number
+  public readonly id!: number
 
   @Column({ type: 'varchar', name: 'stack_name', nullable: false })
   public stackName: string
@@ -21,14 +21,14 @@ export class QuestionStack {
 
   @CreateDateColumn({ name: 'create_At', type: 'timestamp', nullable: false })
   @IsDate()
-  public readonly createdAt: Date
+  public readonly createdAt!: Date
 
   @ManyToOne(() => QuestionSet, (set) => set.questionStacks)
   @Index()
   public questionSet: QuestionSet
 
   @Column({ type: 'integer', name: 'conversationId', nullable: true })
-  public conversationId: number
+  public conversationId!: number
 
   private constructor(
     stackName: string,

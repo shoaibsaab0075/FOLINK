@@ -13,7 +13,7 @@ import { QuestionStack } from './question-stack.entity'
 @Entity()
 export class QuestionSet extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
-  public readonly id: number
+  public readonly id!: number
 
   @Column({ name: 'original_text', type: 'varchar', nullable: false })
   @IsString()
@@ -21,13 +21,13 @@ export class QuestionSet extends BaseEntity {
 
   @CreateDateColumn({ name: 'create_At', type: 'timestamp', nullable: false })
   @IsDate()
-  public readonly createdAt: Date
+  public readonly createdAt!: Date
 
   @OneToMany(() => Question, (question) => question.questionSet, { cascade: true })
-  public questions: Question[]
+  public questions!: Question[]
 
   @OneToMany(() => QuestionStack, (stack) => stack.questionSet, { cascade: true })
-  public questionStacks: QuestionStack[]
+  public questionStacks!: QuestionStack[]
 
   private constructor(originalText: string) {
     super()

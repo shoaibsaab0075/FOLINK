@@ -20,6 +20,7 @@ import { QuestionType } from '../enum/question.type'
 import { MessageType } from 'src/answer/enum/message.type'
 import { ApiResponseUtil } from 'src/common/util/api-response.util'
 import * as pdfParse from 'pdf-parse'
+import e from 'express'
 
 @Injectable()
 export class QuestionService {
@@ -34,6 +35,15 @@ export class QuestionService {
     private readonly geminiApiService: QuestionGeminiService
   ) {}
 
+  // 텍스트 정제 유틸리티 함수
+  private sanitizeText(text: string): string {
+    // 널 바이트 및 제어 문자 제거
+    return text
+      .replace(/\0/g, '') // 널 바이트 제거
+      .replace(/[\x00-\x1F\x7F-\x9F]/g, '') // 제어 문자 제거
+      .trim()
+  }
+
   public async getLatestQuestionSet(): Promise<CreateQuestionSetDto> {
     const questionSets = await this.questionSetRepository.find({
       order: { createdAt: 'DESC' },
@@ -45,16 +55,41 @@ export class QuestionService {
   }
 
   public async createQuestion(dto: CreateQuestionDto): Promise<CreateQuestionSetDto> {
-    const { tech_stack, projects } = await this.geminiApiService.generateQuestions(dto.userResponse)
+    // 입력 텍스트 정제
+    const sanitizedUserResponse = this.sanitizeText(dto.userResponse)
+    if (!sanitizedUserResponse) {
+      throw ApiResponseUtil.error('유효한 텍스트가 없습니다', HttpStatus.BAD_REQUEST)
+    }
+
+    const { tech_stack, projects } =
+      await this.geminiApiService.generateQuestions(sanitizedUserResponse)
     const questionSet = await this.questionSetRepository.save(
-      QuestionSet.createQuestionSet(dto.userResponse)
+      QuestionSet.createQuestionSet(sanitizedUserResponse)
     )
 
     const savedQuestions = await Promise.all(
       projects.flatMap((project) =>
         project.questions.map(async ({ text, purpose }) => {
-          const conversation = await this.createConversation(null, text, QuestionType.PROJECT)
-          const question = Question.createQuestion(project.project_name, text, purpose, questionSet)
+          const sanitizedText = this.sanitizeText(text)
+          const sanitizedPurpose = this.sanitizeText(purpose)
+          if (!sanitizedText || !sanitizedPurpose) {
+            throw ApiResponseUtil.error(
+              '유효하지 않은 질문 또는 목적 텍스트',
+              HttpStatus.BAD_REQUEST
+            )
+          }
+
+          const conversation = await this.createConversation(
+            null,
+            sanitizedText,
+            QuestionType.PROJECT
+          )
+          const question = Question.createQuestion(
+            this.sanitizeText(project.project_name),
+            sanitizedText,
+            sanitizedPurpose,
+            questionSet
+          )
           question.conversationId = conversation.id
           const savedQuestion = await this.questionRepository.save(question)
 
@@ -69,11 +104,24 @@ export class QuestionService {
     const savedStacks = await Promise.all(
       tech_stack.flatMap((tech) =>
         tech.questions.map(async ({ text, purpose }) => {
-          const conversation = await this.createConversation(null, text, QuestionType.TECH_STACK)
+          const sanitizedText = this.sanitizeText(text)
+          const sanitizedPurpose = this.sanitizeText(purpose)
+          if (!sanitizedText || !sanitizedPurpose) {
+            throw ApiResponseUtil.error(
+              '유효하지 않은 질문 또는 목적 텍스트',
+              HttpStatus.BAD_REQUEST
+            )
+          }
+
+          const conversation = await this.createConversation(
+            null,
+            sanitizedText,
+            QuestionType.TECH_STACK
+          )
           const questionStack = QuestionStack.createQuestionStack(
-            tech.stack,
-            text,
-            purpose,
+            this.sanitizeText(tech.stack),
+            sanitizedText,
+            sanitizedPurpose,
             questionSet
           )
           questionStack.conversationId = conversation.id
@@ -109,11 +157,15 @@ export class QuestionService {
     return savedConversation
   }
 
-  public async extractTextFromPdf(filePath: Buffer<ArrayBufferLike>): Promise<string> {
+  public async extractTextFromPdf(buffer: Buffer): Promise<string> {
     try {
-      const data = await pdfParse(filePath)
-      return data.text.trim()
-    } catch (error) {
+      const data = await pdfParse(buffer)
+      const text = this.sanitizeText(data.text)
+      if (!text) {
+        throw new Error('PDF에서 유효한 텍스트를 추출하지 못했습니다')
+      }
+      return text
+    } catch (error: any) {
       throw ApiResponseUtil.error(`PDF 텍스트 추출 실패: ${error.message}`, HttpStatus.BAD_REQUEST)
     }
   }

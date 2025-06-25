@@ -14,7 +14,7 @@ import { Conversation } from 'src/answer/entities/conversation.entity'
 @Entity()
 export class Question extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
-  public readonly id: number
+  public readonly id!: number
 
   @Column({ type: 'varchar', name: 'projectName', nullable: false })
   @IsString()
@@ -33,11 +33,11 @@ export class Question extends BaseEntity {
   public questionSet: QuestionSet
 
   @Column({ type: 'integer', name: 'conversationId', nullable: false })
-  public conversationId: number
+  public conversationId!: number
 
   @CreateDateColumn({ name: 'create_At', type: 'timestamp', nullable: false })
   @IsDate()
-  public readonly createdAt: Date
+  public readonly createdAt!: Date
 
   private constructor(
     projectName: string,
