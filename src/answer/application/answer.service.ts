@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, HttpStatus } from '@nestjs/common'
+import { Injectable, HttpStatus } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Conversation } from '../entities/conversation.entity'
@@ -6,9 +6,9 @@ import { Message } from '../entities/message.entity'
 import { MessageType } from '../enum/message.type'
 import { AnswerGeminiService } from '../integrations/answer-gemini.service'
 import { MessageResponseDto } from '../dto/message/message-response.dto'
-import { DtoMapper } from 'src/common/util/dto-mapper'
+import { DtoMapper } from 'src/common/utils/dto-mapper'
 import { StatusType } from '../enum/status.type'
-import { ApiResponseUtil } from 'src/common/util/api-response.util'
+import { ApiResponseUtil } from 'src/common/utils/api-response.util'
 import { Question } from 'src/question/entities/question.entity'
 
 @Injectable()
@@ -140,7 +140,7 @@ export class AnswerService {
     const conversation = await this.conversationRepository.findOne({
       where: { id: conversationId },
       relations: ['messages'],
-      order: { messages: { createdAt: 'ASC' } }
+      order: { messages: { createdAt: 'ASC', id: 'ASC' } }
     })
     if (!conversation) throw ApiResponseUtil.error('대화를 찾을 수 없습니다.', HttpStatus.NOT_FOUND)
 

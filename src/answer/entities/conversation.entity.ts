@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { Message } from './message.entity'
-import { Question } from 'src/question/entities/question.entity'
 import { QuestionType } from 'src/question/enum/question.type'
 import { StatusType } from '../enum/status.type'
 

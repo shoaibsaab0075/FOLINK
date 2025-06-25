@@ -1,4 +1,4 @@
-import { QuestionType } from "../enum/question.type";
+import { QuestionType } from '../enum/question.type'
 
 export class QuestionCreatedEvent {
   constructor(

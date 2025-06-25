@@ -6,7 +6,7 @@ import { User } from '../entities/user.entity'
 import { Repository } from 'typeorm'
 import { UserFactory } from '../factory/user.factory'
 import { ResponseUserDto } from '../dto/response-user.dto'
-import { ApiResponseUtil } from 'src/common/util/api-response.util'
+import { ApiResponseUtil } from 'src/common/utils/api-response.util'
 
 @Injectable()
 export class UserService {
@@ -91,7 +91,7 @@ export class UserService {
           createdAt: true,
           updatedAt: true,
           isDeleted: true,
-          deletedAt: true 
+          deletedAt: true
         }
       })) ?? undefined
     )

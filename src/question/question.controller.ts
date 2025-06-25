@@ -14,10 +14,8 @@ import { CreateQuestionDto } from './dto/create-question.dto'
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CreateQuestionSetDto } from './dto/create-question-set.dto'
 import { RateLimit } from 'nestjs-rate-limiter'
-import { ApiResponseUtil, IApiResponse } from 'src/common/util/api-response.util'
+import { ApiResponseUtil, IApiResponse } from 'src/common/utils/api-response.util'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { diskStorage } from 'multer'
-import { extname } from 'path'
 
 @ApiTags('텍스트를 통해 질문 추출')
 @Controller('question-sets')
@@ -56,12 +54,12 @@ export class QuestionController {
     FileInterceptor('file', {
       fileFilter: (req, file, cb) => {
         if (file.mimetype !== 'application/pdf') {
-          return cb(new Error('PDF 파일만 허용됩니다'), false);
+          return cb(new Error('PDF 파일만 허용됩니다'), false)
         }
-        cb(null, true);
+        cb(null, true)
       },
-      limits: { fileSize: 10 * 1024 * 1024 }, // 10MB 제한
-    }),
+      limits: { fileSize: 10 * 1024 * 1024 } // 10MB 제한
+    })
   )
   @Post('generate-by-pdf')
   public async generateQuestionsByPdf(
