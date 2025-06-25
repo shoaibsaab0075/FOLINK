@@ -4,21 +4,21 @@ import { IsNumber, IsString } from 'class-validator'
 export class TechStackQuestionDto {
   @Expose()
   @IsNumber()
-  public readonly id: number
+  public readonly id!: number
 
   @Expose()
   @IsString()
-  public readonly stackName: string
+  public readonly stackName!: string
 
   @Expose()
   @IsString()
-  public readonly question: string
+  public readonly question!: string
 
   @Expose()
   @IsString()
-  public readonly purpose: string
+  public readonly purpose!: string
 
   @Expose()
   @IsNumber()
-  public readonly conversationId: number | null
+  public readonly conversationId!: number | null
 }

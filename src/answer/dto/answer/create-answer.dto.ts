@@ -3,5 +3,5 @@ import { IsString } from 'class-validator'
 
 export class CreateAnswerDto {
   @IsString()
-  public userResponse: string
+  public userResponse!: string
 }

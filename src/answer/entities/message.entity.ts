@@ -14,7 +14,7 @@ import { MessageType } from '../enum/message.type'
 @Entity()
 export class Message extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
-  public readonly id: number
+  public readonly id!: number
 
   @Column({ type: 'text', name: 'content', nullable: false })
   @IsString()
@@ -29,11 +29,11 @@ export class Message extends BaseEntity {
   public evaluatorFeedback?: string // AI 메시지에만 사용**
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })
-  public createdAt: Date
+  public createdAt!: Date
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages, { nullable: false })
   @Index()
-  public conversation: Conversation
+  public conversation!: Conversation
 
   private constructor(content: string, type: MessageType, evaluatorFeedback?: string) {
     super()

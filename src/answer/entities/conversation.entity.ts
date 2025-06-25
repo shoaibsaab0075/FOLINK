@@ -15,7 +15,7 @@ import { StatusType } from '../enum/status.type'
 @Entity()
 export class Conversation extends BaseEntity {
   @PrimaryGeneratedColumn()
-  public readonly id: number
+  public readonly id!: number
 
   @Column()
   public originalQuestionId: string
@@ -30,10 +30,10 @@ export class Conversation extends BaseEntity {
   public status: StatusType
 
   @CreateDateColumn()
-  public readonly createdAt: Date
+  public readonly createdAt!: Date
 
   @OneToMany(() => Message, (message) => message.conversation)
-  public messages: Message[] // 초기화 제거
+  public messages!: Message[] // 초기화 제거
 
   private constructor(
     originalQuestionId: string,

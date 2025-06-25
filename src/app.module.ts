@@ -1,37 +1,26 @@
-import { Module, ValidationPipe } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { ConfigurationModule } from './configuration/configuration.module'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ConfigService } from '@nestjs/config'
 import { QuestionModule } from './question/question.module'
 import { RedisModule } from './redis/redis.module'
 import { AnswerModule } from './answer/answer.module'
 import { APP_PIPE } from '@nestjs/core'
 import { MulterModule } from '@nestjs/platform-express'
+import { UserModule } from './user/user.module'
+import { AuthModule } from './auth/auth.module'
+import { CoreModule } from './core/core.module'
 
 @Module({
   imports: [
     MulterModule.register({
       dest: './uploads'
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get('DB_HOST'),
-        port: config.get('DB_PORT'),
-        username: config.get('DB_USERNAME'),
-        password: config.get('DB_PASSWORD'),
-        database: config.get('DB_SCHEMA'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: config.get<boolean>('TYPEORM_SYBCHRONIZE')
-      })
-    }),
-    ConfigurationModule,
     QuestionModule,
     RedisModule,
-    AnswerModule
+    AnswerModule,
+    UserModule,
+    AuthModule,
+    CoreModule
   ],
   controllers: [AppController],
   providers: [
@@ -50,4 +39,8 @@ import { MulterModule } from '@nestjs/platform-express'
     AppService
   ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // AppModule에서 추가적인 전역 설정이 필요하면 여기에 추가
+  }
+}

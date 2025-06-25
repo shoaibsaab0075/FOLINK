@@ -6,15 +6,15 @@ import { TechStackQuestionDto } from './response-stack-question.dto'
 export class CreateQuestionSetDto {
   @Expose()
   @IsNumber()
-  public readonly id: number
+  public readonly id!: number
 
   @Expose()
   @IsString()
-  public readonly originalText: string
+  public readonly originalText!: string
 
   @Expose()
-  public projectQuestions: ProjectQuestionDto[]
+  public projectQuestions!: ProjectQuestionDto[]
 
   @Expose()
-  public techStackQuestions: TechStackQuestionDto[]
+  public techStackQuestions!: TechStackQuestionDto[]
 }

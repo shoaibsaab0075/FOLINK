@@ -167,7 +167,7 @@ export class AnswerGeminiService {
       const cleanedText = rawText.replace(/```json|```/g, '').trim()
       console.log('Cleaned response:', cleanedText)
       return JSON.parse(cleanedText)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Gemini 응답 파싱 실패:', error, 'Raw Text:', rawText)
       throw new GeminiApiError('Gemini 응답 파싱 실패: ' + error.message)
     }
