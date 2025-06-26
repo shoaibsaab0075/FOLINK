@@ -4,8 +4,12 @@ import { AppModule } from './app.module'
 import * as expressBasicAuth from 'express-basic-auth'
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { JsonRequestInterceptor } from './interceptors/json-request.interceptor'
-import { ErrorResponseInterceptor } from './interceptors/error-response.interceptor'
+import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor'
+import { ErrorResponseInterceptor } from './common/interceptors/error-response.interceptor'
+import * as dotenv from 'dotenv'
+import { HttpExceptionFilter } from './common/filters/http-exception.filter'
+
+dotenv.config()
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -15,18 +19,15 @@ async function bootstrap() {
     credentials: true
   })
 
-  app.useGlobalInterceptors(
-    new JsonRequestInterceptor(),
-    new ErrorResponseInterceptor()
-  )
-
+  app.useGlobalInterceptors(new SuccessResponseInterceptor(), new ErrorResponseInterceptor())
+  app.useGlobalFilters(new HttpExceptionFilter())
   app.use(cookieParser())
   app.use(
     ['/api', '/api-jsom'],
     expressBasicAuth({
       challenge: true,
       users: {
-        [process.env.SWAGGER_USER]: process.env.SWAGGER_PW
+        [process.env.SWAGGER_USER as string]: process.env.SWAGGER_PW as string
       }
     })
   )

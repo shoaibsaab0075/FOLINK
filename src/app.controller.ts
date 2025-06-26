@@ -28,9 +28,4 @@ export class AppController {
 
     return test
   }
-
-  @Post('test')
-  PostTestData(@Body(ValidationPipe) dto: TestDto) {
-    return this.appService.PostTestDate(dto)
-  }
 }
