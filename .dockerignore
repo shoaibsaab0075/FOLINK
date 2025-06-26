@@ -1,0 +1,20 @@
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+
+# Local environment variables
+.env
+
+# Git files
+.git
+.gitignore
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# etc
+README.md
