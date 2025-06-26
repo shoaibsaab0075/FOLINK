@@ -28,7 +28,12 @@ export class Message extends BaseEntity {
   @IsString()
   public evaluatorFeedback?: string // AI 메시지에만 사용**
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp with time zone',
+    precision: 6,
+    nullable: false
+  })
   public createdAt!: Date
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages, { nullable: false })

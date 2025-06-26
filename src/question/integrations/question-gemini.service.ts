@@ -1,8 +1,8 @@
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { GeminiApiError } from 'src/common/error'
-import { CacheKeyGenerator } from 'src/common/util/cache-key-generator'
+import { GeminiApiError } from 'src/common/errors'
+import { CacheKeyGenerator } from 'src/common/utils/cache-key-generator'
 import { RedisService } from 'src/redis/redis.service'
 
 @Injectable()

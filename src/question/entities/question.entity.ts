@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import { IsDate, IsString } from 'class-validator'
 import { QuestionSet } from './question-set.entity'
-import { Conversation } from 'src/answer/entities/conversation.entity'
 
 @Entity()
 export class Question extends BaseEntity {

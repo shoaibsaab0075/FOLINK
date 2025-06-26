@@ -8,7 +8,7 @@ import {
   NestInterceptor
 } from '@nestjs/common'
 import { map, Observable } from 'rxjs'
-import { IApiResponse } from 'src/common/util/api-response.util'
+import { IApiResponse } from 'src/common/utils/api-response.util'
 
 @Injectable()
 export class SuccessResponseInterceptor implements NestInterceptor {

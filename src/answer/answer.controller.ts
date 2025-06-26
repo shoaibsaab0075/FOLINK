@@ -4,18 +4,14 @@ import {
   Body,
   Param,
   HttpStatus,
-  HttpException,
-  NotFoundException,
   Get
 } from '@nestjs/common'
 import { AnswerService } from './application/answer.service'
 import { CreateAnswerDto } from './dto/answer/create-answer.dto'
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RateLimit } from 'nestjs-rate-limiter'
-import { QuestionService } from 'src/question/application/question.service'
 import { MessageResponseDto } from './dto/message/message-response.dto'
-import { ApiResponseUtil, IApiResponse } from 'src/common/util/api-response.util'
-import { MessageRequestDto } from './dto/message/message-request.dto'
+import { ApiResponseUtil, IApiResponse } from 'src/common/utils/api-response.util'
 import { Conversation } from './entities/conversation.entity'
 
 @ApiTags('질문에서 대한 답변 생성 및 대화 이어가기')

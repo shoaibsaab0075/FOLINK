@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
-import { IApiResponse } from 'src/common/util/api-response.util'
+import { IApiResponse } from 'src/common/utils/api-response.util'
 
 @Injectable()
 export class ErrorResponseInterceptor implements NestInterceptor {

@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index, CreateDateColumn } from 'typeorm'
 import { QuestionSet } from './question-set.entity'
 import { IsDate, IsString } from 'class-validator'
-import { Conversation } from 'src/answer/entities/conversation.entity'
 
 @Entity('question_stacks')
 export class QuestionStack {

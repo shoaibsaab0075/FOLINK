@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor'
 import { ErrorResponseInterceptor } from './common/interceptors/error-response.interceptor'
 import * as dotenv from 'dotenv'
+import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ async function bootstrap() {
   })
 
   app.useGlobalInterceptors(new SuccessResponseInterceptor(), new ErrorResponseInterceptor())
-
+  app.useGlobalFilters(new HttpExceptionFilter())
   app.use(cookieParser())
   app.use(
     ['/api', '/api-jsom'],

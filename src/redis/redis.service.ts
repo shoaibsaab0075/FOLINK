@@ -23,7 +23,7 @@ export class RedisService {
   }
 
   // 카 값으로 조회
-  public async get<T>(key: string): Promise<T | null> {  
+  public async get<T>(key: string): Promise<T | null> {
     const data = await this.client.get(key)
     return data ? JSON.parse(data) : null
   }

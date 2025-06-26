@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserService } from './application/user.service'
-import { ApiResponseUtil } from 'src/common/util/api-response.util'
+import { ApiResponseUtil } from 'src/common/utils/api-response.util'
 import { ApiOperation } from '@nestjs/swagger'
 
 @Controller('user')
