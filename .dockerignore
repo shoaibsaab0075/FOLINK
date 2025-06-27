@@ -12,9 +12,9 @@ dist/
 .gitignore
 
 # Docker files
-Dockerfile
-docker-compose.yml
-.dockerignore
+# Dockerfile
+# docker-compose.yml
+# .dockerignore
 
 # etc
 README.md

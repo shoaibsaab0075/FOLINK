@@ -7,6 +7,7 @@
 # Node.js 20 버전의 가벼운 alpine 이미지를 베이스로 사용하고, 이 스테이지의 이름을 'builder'로 지정합니다.
 FROM node:20-alpine AS builder
 
+RUN mkdir -p /app
 # 컨테이너 내부에 /app 이라는 작업 디렉토리를 생성하고, 이후 모든 명령어가 실행될 위치로 지정합니다.
 WORKDIR /app
 
@@ -35,6 +36,7 @@ RUN npm run build
 # 다시 깨끗하고 가벼운 node:20-alpine 이미지에서 새로운 스테이지를 시작합니다.
 FROM node:20-alpine
 
+RUN mkdir -p /app
 # 런타임 환경에서도 동일하게 /app 디렉토리를 작업 공간으로 설정합니다.
 WORKDIR /app
 

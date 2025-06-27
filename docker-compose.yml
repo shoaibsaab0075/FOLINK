@@ -32,9 +32,10 @@ services:
 
   folink_app:
     container_name: folink_app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: silofn/folink:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "3000:3000"
