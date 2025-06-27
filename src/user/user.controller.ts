@@ -5,7 +5,7 @@ import { UserService } from './application/user.service'
 import { ApiResponseUtil } from 'src/common/utils/api-response.util'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
-@ApiTags('사용자 관리')
+@ApiTags('사용자 관리ㅇㅇ')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
