@@ -14,7 +14,7 @@ import { MessageResponseDto } from './dto/message/message-response.dto'
 import { ApiResponseUtil, IApiResponse } from 'src/common/utils/api-response.util'
 import { Conversation } from './entities/conversation.entity'
 
-@ApiTags('질문에서 대한 답변 생성 및 대화 이어가기.')
+@ApiTags('질문에서 대한 답변 생성 및 대화 이어가기..')
 @Controller('conversations')
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
