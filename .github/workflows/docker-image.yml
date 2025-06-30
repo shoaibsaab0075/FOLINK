@@ -48,4 +48,8 @@ jobs:
             docker-compose down
             docker pull silofn/folink:latest
             docker-compose up -d
+<<<<<<< HEAD
             EOF
+=======
+          EOF
+>>>>>>> origin/main
