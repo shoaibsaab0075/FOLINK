@@ -15,10 +15,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # NestJS에 맞는 버전
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps  # package-lock.json 생성
+        run: npm install --legacy-peer-deps
 
       - name: Build NestJS application
         run: npm run build
@@ -43,6 +43,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            echo "Current directory: $(pwd)"
             cd /home/ec2-user/folink
             docker-compose down
             docker pull silofn/folink:latest
