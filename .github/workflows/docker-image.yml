@@ -48,4 +48,4 @@ jobs:
             docker-compose down
             docker pull silofn/folink:latest
             docker-compose up -d
-            EOF
+          EOF
