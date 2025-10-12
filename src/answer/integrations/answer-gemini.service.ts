@@ -1,5 +1,5 @@
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Optional } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { GeminiApiError } from 'src/common/errors'
 import { CacheKeyGenerator } from 'src/common/utils/cache-key-generator'
@@ -12,7 +12,7 @@ export class AnswerGeminiService {
   private readonly ttl: number
 
   constructor(
-    private readonly redisService: RedisService,
+    @Optional() private readonly redisService: RedisService | undefined,
     private readonly configService: ConfigService
   ) {
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string)
@@ -98,7 +98,7 @@ export class AnswerGeminiService {
   }> {
     const cacheKey = this.generateCacheKey(originalQuestionId, lastAiQuestionText, userResponse)
 
-    if (options.cache !== false) {
+    if (options.cache !== false && this.redisService) {
       const cachedData = await this.redisService.get<{
         next_step: {
           original_question_id: string
@@ -112,7 +112,7 @@ export class AnswerGeminiService {
         console.log(`CacheKey (HIT): ${cacheKey}`)
         return cachedData
       }
-    } else {
+    } else if (options.cache === false) {
       console.log(`CacheKey (SKIPPED): ${cacheKey}`)
     }
 
@@ -146,7 +146,7 @@ export class AnswerGeminiService {
       throw new GeminiApiError(`질문 ${nextStep.question.text}의 purpose가 유효하지 않습니다.`)
     }
 
-    if (options.cache !== false) {
+    if (options.cache !== false && this.redisService) {
       await this.redisService.set(cacheKey, result, this.ttl)
       console.log(`저장된 CacheKey: ${cacheKey}`)
     }
