@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { CoreModule } from './core/core.module'
 import { FeedbackModule } from './feedback/feedback.module'
+import { HealthModule } from './health/health.module'
 
 const imports = [
   MulterModule.register({
@@ -19,7 +20,8 @@ const imports = [
   AuthModule,
   CoreModule,
   FeedbackModule,
-  AnswerModule
+  AnswerModule,
+  HealthModule
 ]
 
 // Solo importa RedisModule si no estamos en desarrollo
