@@ -19,11 +19,14 @@ async function bootstrap() {
     credentials: true
   })
 
+  // Habilitar los hooks de cierre controlado (Graceful Shutdown)
+  app.enableShutdownHooks()
+
   app.useGlobalInterceptors(new SuccessResponseInterceptor(), new ErrorResponseInterceptor())
   app.useGlobalFilters(new HttpExceptionFilter())
   app.use(cookieParser())
   app.use(
-    ['/api', '/api-jsom'],
+    ['/api', '/api-json'], // Corregido el error tipográfico de '/api-jsom'
     expressBasicAuth({
       challenge: true,
       users: {
