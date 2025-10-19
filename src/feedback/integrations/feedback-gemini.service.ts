@@ -1,5 +1,5 @@
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Optional } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { RedisService } from 'src/redis/redis.service'
 import { Message } from 'src/answer/entities/message.entity'
@@ -14,7 +14,7 @@ export class FeedbackGeminiService implements IFeedbackGenerator {
   private readonly ttl: number
 
   constructor(
-    private readonly redisService: RedisService,
+    @Optional() private readonly redisService: RedisService | undefined,
     private readonly configService: ConfigService
   ) {
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string)
@@ -52,10 +52,12 @@ export class FeedbackGeminiService implements IFeedbackGenerator {
     }
 
     const cacheKey = this.generateCacheKey(conversationId, JSON.stringify(messages))
-    const cachedFeedback = await this.redisService.get<string>(cacheKey)
-    if (cachedFeedback) {
-      console.log(`Cache hit for feedback: ${cacheKey}`)
-      return cachedFeedback
+    if (this.redisService) {
+      const cachedFeedback = await this.redisService.get<string>(cacheKey)
+      if (cachedFeedback) {
+        console.log(`Cache hit for feedback: ${cacheKey}`)
+        return cachedFeedback
+      }
     }
 
     const prompt = this.buildFeedbackPrompt(messages)
@@ -79,8 +81,10 @@ export class FeedbackGeminiService implements IFeedbackGenerator {
     }
 
     const result = JSON.stringify(feedbackJson)
-    await this.redisService.set(cacheKey, result, this.ttl)
-    console.log(`Cached feedback for ${cacheKey}`)
+    if (this.redisService) {
+      await this.redisService.set(cacheKey, result, this.ttl)
+      console.log(`Cached feedback for ${cacheKey}`)
+    }
     return result
   }
 
