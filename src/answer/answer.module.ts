@@ -9,12 +9,18 @@ import { Message } from './entities/message.entity'
 import { QuestionModule } from 'src/question/question.module'
 import { Question } from 'src/question/entities/question.entity'
 
+const moduleImports: any[] = [
+  TypeOrmModule.forFeature([Conversation, Message, Question]),
+  forwardRef(() => QuestionModule)
+]
+
+// Only include Redis in non-development environments to allow running without Redis locally
+if (process.env.NODE_ENV !== 'development') {
+  moduleImports.push(RedisModule)
+}
+
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Conversation, Message, Question]),
-    RedisModule,
-    forwardRef(() => QuestionModule)
-  ],
+  imports: moduleImports,
   controllers: [AnswerController],
   providers: [AnswerService, AnswerGeminiService],
   exports: [AnswerService]
