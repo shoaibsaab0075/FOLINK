@@ -1,16 +1,34 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common'
-import { HttpStatus } from '@nestjs/common'
-import { ApiResponseUtil } from '../utils/api-response.util'
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common'
+import { Response } from 'express'
+import { IApiResponse } from '../utils/api-response.util'
 
-@Catch()
+@Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
-    const response = ctx.getResponse()
-    const status = exception.status || HttpStatus.INTERNAL_SERVER_ERROR
+    const response = ctx.getResponse<Response>()
+    const status = exception.getStatus()
+    const exceptionResponse = exception.getResponse()
 
-    response
-      .status(status)
-      .json(ApiResponseUtil.error(exception.message || '내부 서버 오류', status, exception.error))
+    let message: string
+    let errorDetails: any
+
+    if (typeof exceptionResponse === 'string') {
+      message = exceptionResponse
+    } else {
+      const res = exceptionResponse as { message: string | string[]; error: string }
+      message = Array.isArray(res.message) ? res.message.join(', ') : res.message
+      errorDetails = res.error
+    }
+
+    const apiResponse: IApiResponse<null> = {
+      statusCode: status,
+      message: message,
+      error: {
+        code: errorDetails || HttpStatus[status],
+      },
+    }
+
+    response.status(status).json(apiResponse)
   }
 }
