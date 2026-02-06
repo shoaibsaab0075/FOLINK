@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common'
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -6,7 +6,6 @@ import { User } from '../entities/user.entity'
 import { Repository } from 'typeorm'
 import { UserFactory } from '../factory/user.factory'
 import { ResponseUserDto } from '../dto/response-user.dto'
-import { ApiResponseUtil } from 'src/common/utils/api-response.util'
 
 @Injectable()
 export class UserService {
@@ -33,10 +32,7 @@ export class UserService {
       }
     })
     if (!user) {
-      throw ApiResponseUtil.error(`사용자를 찾을 수 없습니다. ID: ${id}`, 404, {
-        code: 'USER_NOT_FOUND',
-        details: '해당 ID의 사용자가 존재하지 않습니다.'
-      })
+      throw new NotFoundException(`사용자를 찾을 수 없습니다. ID: ${id}`)
     }
     return user
   }
@@ -52,10 +48,7 @@ export class UserService {
     })
 
     if (existing) {
-      throw ApiResponseUtil.error(`${username}은 이미 사용 중인 사용자 이름입니다.`, 409, {
-        code: 'USERNAME_CONFLICT',
-        details: '입력한 사용자 이름은 이미 다른 사용자에 의해 사용되고 있습니다.'
-      })
+      throw new ConflictException(`${username}은 이미 사용 중인 사용자 이름입니다.`)
     }
   }
 
