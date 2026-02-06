@@ -54,3 +54,12 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+*.text
+
+# Temporary and project-specific files
+WARP.md
+commit.txt
+htt.rest
+implementaciones.md
+test-websocket.html
