@@ -8,8 +8,13 @@ import { FeedbackGeminiService } from './integrations/feedback-gemini.service'
 import { FEEDBACK_GENERATOR_TOKEN } from './interfaces/feedback-generator.interface'
 import { RedisModule } from 'src/redis/redis.module'
 
+const moduleImports: any[] = [TypeOrmModule.forFeature([Feedback, Conversation])]
+if (process.env.NODE_ENV !== 'development') {
+  moduleImports.push(RedisModule)
+}
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Feedback, Conversation]), RedisModule],
+  imports: moduleImports,
   controllers: [FeedbackController],
   providers: [
     FeedbackService,
