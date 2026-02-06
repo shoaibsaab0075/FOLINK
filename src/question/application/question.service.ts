@@ -17,7 +17,7 @@ import { Message } from 'src/answer/entities/message.entity'
 import { QuestionType } from '../enum/question.type'
 import { MessageType } from 'src/answer/enum/message.type'
 import { ApiResponseUtil } from 'src/common/utils/api-response.util'
-import * as pdfParse from 'pdf-parse'
+const pdfParse = require('pdf-parse')
 
 @Injectable()
 export class QuestionService {

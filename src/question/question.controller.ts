@@ -29,10 +29,10 @@ export class QuestionController {
   @Post('generate-by-text')
   public async generateQuestionsByText(
     @Body() createQuestionDto: CreateQuestionDto
-  ): Promise<IApiResponse<{ questionSet: CreateQuestionSetDto }>> {
+  ): Promise<IApiResponse<CreateQuestionSetDto>> {
     const questionSet = await this.questionService.createQuestion(createQuestionDto)
 
-    return ApiResponseUtil.success({ questionSet }, 'text값에 대한 질문 생성', HttpStatus.CREATED)
+    return ApiResponseUtil.success(questionSet, 'text값에 대한 질문 생성', HttpStatus.CREATED)
   }
 
   @ApiOperation({
@@ -64,12 +64,12 @@ export class QuestionController {
   @Post('generate-by-pdf')
   public async generateQuestionsByPdf(
     @UploadedFile() file: Express.Multer.File
-  ): Promise<IApiResponse<{ questionSet: CreateQuestionSetDto }>> {
+  ): Promise<IApiResponse<CreateQuestionSetDto>> {
     const text = await this.questionService.extractTextFromPdf(file.buffer)
     const createQuestionDto = new CreateQuestionDto()
     createQuestionDto.userResponse = text
     const questionSet = await this.questionService.createQuestion(createQuestionDto)
-    return ApiResponseUtil.success({ questionSet }, 'PDF 기반 질문 생성 성공', HttpStatus.CREATED)
+    return ApiResponseUtil.success(questionSet, 'PDF 기반 질문 생성 성공', HttpStatus.CREATED)
   }
 
   @ApiOperation({ summary: '질문 세트 조회', description: '추출된 질문 리스트 목록 조회' })
